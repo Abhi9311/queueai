@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+const API_BASE_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
 const DEPARTMENTS = ["General Medicine", "Pediatrics", "Dermatology", "Orthopedics"];
 
 export default function DoctorsView({ onStartSession }) {
@@ -14,7 +16,7 @@ export default function DoctorsView({ onStartSession }) {
   async function loadDoctors() {
     setLoading(true);
     try {
-      const res = await fetch("/api/doctors");
+      const res = await fetch(`${API_BASE_URL}/api/doctors`);
       const data = await res.json();
       setDoctors(data.doctors);
       setMae(data.model_mae_minutes);
@@ -41,7 +43,7 @@ export default function DoctorsView({ onStartSession }) {
 
     setSubmitting(true);
     try {
-      const res = await fetch("/api/doctors", {
+      const res = await fetch(`${API_BASE_URL}/api/doctors`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
