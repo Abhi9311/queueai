@@ -25,6 +25,7 @@ const VIEW_TITLES = {
 };
 
 const AUTH_STORAGE_KEY = "queueai.auth";
+const API_BASE_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 function loadStoredAuth() {
   try {
@@ -83,7 +84,7 @@ export default function App() {
     if (auth?.role !== "staff" || yourToken === null) return;
     let cancelled = false;
     setPredictionLoading(true);
-    fetch(`/api/queue/${yourToken}`)
+    fetch(`${API_BASE_URL}/api/queue/${yourToken}`)
       .then((res) => {
         if (!res.ok) throw new Error(`Request failed: ${res.status}`);
         return res.json();
@@ -105,7 +106,7 @@ export default function App() {
     setPrediction(null);
     setYourToken(null);
     try {
-      await fetch("/api/queue/reset", {
+      await fetch(`${API_BASE_URL}/api/queue/reset`, {
         method: "POST",
         headers: doctorOverride ? { "Content-Type": "application/json" } : undefined,
         body: doctorOverride ? JSON.stringify(doctorOverride) : undefined,
