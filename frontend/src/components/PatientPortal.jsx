@@ -4,6 +4,8 @@ import ETAPanel from "./ETAPanel.jsx";
 import DelayAlert from "./DelayAlert.jsx";
 import { Activity, LogOut } from "lucide-react";
 
+const API_BASE_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
 function pad(n) {
   return String(n).padStart(3, "0");
 }
@@ -15,7 +17,7 @@ export default function PatientPortal({ token, queueState, connected, onLogout }
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    fetch(`/api/queue/${token}`)
+    fetch(`${API_BASE_URL}/api/queue/${token}`)
       .then((res) => {
         if (!res.ok) throw new Error(`Request failed: ${res.status}`);
         return res.json();
