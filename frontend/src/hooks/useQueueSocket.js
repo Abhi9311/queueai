@@ -17,8 +17,10 @@ export function useQueueSocket() {
     let retryTimeout;
 
     function connect() {
-      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-      const url = `${protocol}//${window.location.host}/ws/queue`;
+      const apiUrl = import.meta.env.VITE_API_URL || "";
+      const url = apiUrl
+  ? `${apiUrl.replace(/^http/, "ws")}/ws/queue`
+  : `${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.host}/ws/queue`;
       const socket = new WebSocket(url);
       socketRef.current = socket;
 
